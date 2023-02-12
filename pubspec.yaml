@@ -33,8 +33,10 @@ dependencies:
     sdk: flutter
 
   qr_flutter: ^4.0.0
-
-  flutter_launcher_icons: ^0.11.0
+  # flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.2.17
+  share_plus: ^6.3.1
+  share_files_and_screenshot_widgets: ^1.0.6
 
 flutter_icons:
   # android: "launcher_icon"
@@ -97,3 +99,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#1E80F0"
+  image: assets/splash_screen_image.png

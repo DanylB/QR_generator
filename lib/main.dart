@@ -1,9 +1,6 @@
-//center title
-// rounded appbar
-// Button for save QR
-
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 
 void main() => runApp(const MyApp());
 
@@ -15,67 +12,193 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-          appBar: _buildAppBar(),
-          body: const HomePage(),
-        ),
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: const HomePage()),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var sizeH = MediaQuery.of(context).size.height;
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          Container(
+            color: const Color(0xFF1E80F0),
+            child: _buildAppBar(),
+          ),
+          Positioned(
+            top: sizeH * 0.15,
+            child: const HomePageBody(),
+          ),
+        ],
       ),
     );
   }
 
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: Row(
+  TextButton _buildShareButton(BuildContext context) {
+    return TextButton(
+      // onPressed: () => shareQR(),
+      onPressed: () {},
+      style: TextButton.styleFrom(
+          // backgroundColor: Colors.blue.shade100.withOpacity(0.2),
+          ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.share,
+            size: 28,
+          ),
+          const SizedBox(width: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              'Share',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(color: Colors.blue),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align _buildAppBar() {
+    return Align(
+      alignment: const FractionalOffset(0.0, 0.08),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
             'assets/QRgnerator_logo2.png',
             scale: 10,
           ),
-          const SizedBox(width: 10),
-          const Text(" Generator"),
+          const SizedBox(width: 15),
+          const Text(
+            "Generator",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+class HomePageBody extends StatefulWidget {
+  const HomePageBody({super.key});
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageBody> createState() => _HomePageBodyState();
 }
 
-class _HomePageState extends State<HomePage> {
-  TextEditingController controller = TextEditingController();
+class _HomePageBodyState extends State<HomePageBody> {
+  TextEditingController controllerTextInput = TextEditingController();
+  var image;
+  GlobalKey previewContainer = GlobalKey();
+  int originalSize = 1920;
+
   String inputTextField = 'QR';
+
   sendDataToQRGenerator() {
-    setState(() => inputTextField = controller.text);
+    setState(() => inputTextField = controllerTextInput.text);
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
   clearTextField() {
-    setState(() => controller.clear());
+    setState(() => controllerTextInput.clear());
+  }
+
+  shareQR() {
+    ShareFilesAndScreenshotWidgets().shareScreenshot(
+      previewContainer,
+      originalSize,
+      "Title",
+      "Name.png",
+      "image/png",
+      // text: "This is the caption!",
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(20, 50, 20, 40),
+              child: buildTextField(context),
+            ),
+            RepaintBoundary(
+              key: previewContainer,
+              child: Material(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    QrImage(
+                      size: 200,
+                      data: inputTextField,
+                    ),
+                    _buildQRSubtext(context),
+                  ],
+                ),
+              ),
+            ),
+            // SizedBox(height: 40),
+            Spacer(flex: 1),
+            _buildShareButton(context),
+            Spacer(flex: 2),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TextButton _buildShareButton(BuildContext context) {
+    return TextButton(
+      onPressed: () => shareQR(),
+      // onPressed: () {},
+      style: TextButton.styleFrom(
+          // backgroundColor: Colors.blue.shade100.withOpacity(0.2),
+          ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(20, 50, 20, 40),
-            child: buildTextField(context),
+          const Icon(
+            Icons.share,
+            size: 28,
           ),
-          QrImage(
-            size: 200,
-            data: inputTextField,
+          const SizedBox(width: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              'Share',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(color: Colors.blue),
+            ),
           ),
-          _buildQRSubtext(context),
-          // Button for save QR
         ],
       ),
     );
@@ -84,13 +207,14 @@ class _HomePageState extends State<HomePage> {
   Padding _buildQRSubtext(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: SizedBox(
-          width: MediaQuery.of(context).size.width * .8,
-          child: Center(
-              child: Text(
+      child: Container(
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
+          child: Text(
+            textAlign: TextAlign.center,
             inputTextField,
             style: Theme.of(context).textTheme.headline5,
-          ))),
+          )),
     );
   }
 
@@ -98,10 +222,11 @@ class _HomePageState extends State<HomePage> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * .9,
       child: TextField(
+        maxLength: 100,
         textInputAction: TextInputAction.done,
         onSubmitted: (val) => sendDataToQRGenerator(),
         autofocus: true,
-        controller: controller,
+        controller: controllerTextInput,
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
             labelText: "Enter Text",
