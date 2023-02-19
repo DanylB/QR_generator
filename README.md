@@ -1,16 +1,21 @@
-# qr_generator
+# QR Generator
 
-A new Flutter project.
+Simple and fast QR code generator with the ability to share the QR code.
+Supports letters, numbers, symbols and emoji
 
-## Getting Started
+<img src="screenshots/google_play_logo.png" width="20px"> Download from Google Play [QR Generator](https://play.google.com/store/apps/details?id=com.dblb.qr_generator.name)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<img src="screenshots/qr_baner_1024.png" width="500px"> 
+<img src="screenshots/screen10.png" width="500px"> 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+<p> 
+<img src="screenshots/screen3.png" width="180px">  
+<img src="screenshots/screen4.png" width="180px">
+<img src="screenshots/screen5.png" width="180px">
+<img src="screenshots/screen6.png" width="180px">
+<img src="screenshots/screen7.png" width="180px">
+<p/>
+
