@@ -43,11 +43,8 @@ class HomePage extends StatelessWidget {
 
   TextButton _buildShareButton(BuildContext context) {
     return TextButton(
-      // onPressed: () => shareQR(),
       onPressed: () {},
-      style: TextButton.styleFrom(
-          // backgroundColor: Colors.blue.shade100.withOpacity(0.2),
-          ),
+      style: TextButton.styleFrom(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -165,9 +162,9 @@ class _HomePageBodyState extends State<HomePageBody> {
               ),
             ),
             // SizedBox(height: 40),
-            Spacer(flex: 1),
+            const Spacer(flex: 1),
             _buildShareButton(context),
-            Spacer(flex: 2),
+            const Spacer(flex: 2),
           ],
         ),
       ),
